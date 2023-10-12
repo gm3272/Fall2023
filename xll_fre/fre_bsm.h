@@ -6,6 +6,10 @@
 #include "fre_black.h"
 
 namespace fre::bsm {
+	inline double moneyness(double f, double k, double s)
+	{
+		return std::log(k / f) / s + s / 2;
+	}
 
 #pragma warning(disable: 4100)
 	namespace put {
@@ -14,11 +18,13 @@ namespace fre::bsm {
 		//                  --bond--|-------stock--------  ------option------
 		inline double value(double r, double S0, double σ, double k, double t)
 		{
-			double R = 0; //!!! implement this
-			double f = 0; //!!! implement this
-			double s = 0; //!!! implement this
-
-			return fre::black::put::value(f, s, k)/R;
+			double R = std::exp(r * t);
+			double f = R * S0;
+			double s = σ * std::sqrt(t);
+			
+			double m = moneyness(f, k, s);
+			
+			return (k * fre::normal::cdf(m) - f * fre::normal::cdf(m, s))/R;
 		}
 	}
 } // namespace fre::bsm
