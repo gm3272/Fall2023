@@ -17,3 +17,9 @@ AddIn xai_bsm_put_value(
 	.FunctionHelp("Return the Black-Scholes-Merton put value.")
 );
 // !!! Implement xll_bsm_put_value
+
+doule WINAPI xll_bsm_put_value(double r, double S0, double sigma, double k, double t)
+{
+#progma XLLEXPORT
+	return fre::bsm::put::value(r,S0,sigma,k,t)
+}
